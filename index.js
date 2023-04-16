@@ -14,6 +14,10 @@ const client = new Client({
 });
 
 let id = 0;
+let array = {
+    table: []
+ };
+fs.writeFileSync("tasks.json", "", {flag:"w"});
 
 client.on("ready", () => {
     console.log(`ready ${client.user.tag}`);
@@ -22,17 +26,25 @@ client.on("ready", () => {
 client.on("messageCreate", (message) => {
     if (message.content.startsWith("/todo ")) {
         id++
-        let asignee = message.author
+        let asignee = message.author;
         let taskName = message.content.substring(6);
+        
+        array.table.push({id: id, task: taskName, asignee: asignee.id});
+        let json = JSON.stringify(array);
 
         message.reply(`Created task "${taskName}" for ${asignee}`);
-        fs.writeFileSync("tasks.txt", `ID: ${id}, Task: ${taskName}, Created by: ${asignee}\n`, {flag:"a"});
+        fs.writeFileSync("tasks.json", json, {flag:"w"});
     }
-});
 
-client.on("messageCreate", (message) => {
-    if (message.content.startsWith("/display")) {
-        message.reply(fs.readFileSync("tasks.txt").toString());
+    else if (message.content.startsWith("/display")) {
+        let obj = fs.readFileSync("tasks.json");
+        obj = JSON.parse(obj);
+        let reply = "";
+        obj.table.forEach(element => {
+            reply += `${element.id}. ${element.taskName}, by <@${element.asignee}> \n`
+           // message.reply(`${element.id}. ${element.taskName}, by <@${element.asignee   }>`); 
+        });
+        message.reply(reply);
     }
 });
 
