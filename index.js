@@ -41,7 +41,7 @@ client.on("messageCreate", (message) => {
         obj = JSON.parse(obj);
         let reply = "";
         obj.table.forEach(element => {
-            reply += `${element.id}. ${element.taskName}, by <@${element.asignee}> \n`
+            reply += `${element.id}. ${element.task}, by <@${element.asignee}> \n`
            // message.reply(`${element.id}. ${element.taskName}, by <@${element.asignee   }>`); 
         });
         message.reply(reply);
