@@ -13,23 +13,25 @@ const client = new Client({
     ]
 });
 
+let id = 0;
+
 client.on("ready", () => {
     console.log(`ready ${client.user.tag}`);
 });
 
 client.on("messageCreate", (message) => {
     if (message.content.startsWith("/todo ")) {
+        id++
         let asignee = message.author
         let taskName = message.content.substring(6);
 
         message.reply(`Created task "${taskName}" for ${asignee}`);
-        fs.writeFileSync("tasks.txt", `Task: ${taskName}, Created by: ${asignee}\n`, {flag:"a+"});
+        fs.writeFileSync("tasks.txt", `ID: ${id}, Task: ${taskName}, Created by: ${asignee}\n`, {flag:"a"});
     }
 });
 
 client.on("messageCreate", (message) => {
     if (message.content.startsWith("/display")) {
-        
         message.reply(fs.readFileSync("tasks.txt").toString());
     }
 });
