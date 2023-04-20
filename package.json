@@ -4,7 +4,11 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "ts-node src/index.ts",
+        "start:dev": "ts-node-dev src/index.ts",
+        "start:prod": "node dist/index.js",
+        "build": "tsc",
+        "watch": "tsc-w"
     },
     "repository": {
         "type": "git",
@@ -17,6 +21,15 @@
     },
     "homepage": "https://github.com/savipauk/ToDoBot#readme",
     "dependencies": {
-        "discord.js": "^14.9.0"
+        "discord.js": "^14.9.0",
+        "dotenv": "^16.0.3",
+        "glob": "^10.2.1"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/node": "^18.15.12",
+        "ts-node": "^10.9.1",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.0.4"
     }
 }
