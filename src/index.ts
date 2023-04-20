@@ -5,7 +5,7 @@ import path from 'path';
 
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
-const TOKEN = process.env.token;
+const token = process.env.token;
 
 const client = new Client({
     intents: [
@@ -64,4 +64,4 @@ client.on("ready", () => {
     console.log(`ready ${client.user.tag}`);
 });
 
-client.login(TOKEN);
+client.login(token);
