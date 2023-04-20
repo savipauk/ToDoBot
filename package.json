@@ -2,7 +2,7 @@
     "name": "todobot",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "start": "ts-node src/index.ts",
         "start:dev": "ts-node-dev src/index.ts",

@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+const tasksFile = "tasks.json";
+
 export type Task = {
     id: number;
     description: string;
@@ -7,43 +9,43 @@ export type Task = {
 }
 
 // TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
 
 
-export function AddTask(description: string, asignee: string) {
+export function AddTask(description: string, asignee: string): number {
     let id = FindLastId();
 
     _AddTask({ id, description, asignee });
+
+    return id;
 }
 
-export function RemoveTask(id) {
+export function RemoveTask(id: number): Task {
     let tasks = GetTasks();
 
     FlushTasks();
 
     // TODO: THROW SOMETHING IF TASK DOESNT EXIST ITS NOT HANDLED YET
 
+    let removedTask;
+
     for (let task of tasks) {
         if (task.id == id) {
+            removedTask = task;
             continue;
         }
 
         _AddTask(task);
     }
+
+    return removedTask;
 }
 
 
 function FindLastId() {
     let tasks = GetTasks();
 
-    // TODO: throw this shit into a database
-    // TODO: throw this shit into a database
-    // TODO: throw this shit into a database
     let id: number = 0;
 
-    // TODO: throw this shit into a database
-    // TODO: throw this shit into a database
     // TODO: throw this shit into a database so you dont have to poll tasks every time
     if (tasks.length != 0) {
         for (let t of tasks) {
@@ -62,17 +64,17 @@ function _AddTask(task: Task) {
 
     let json = { tasks: tasks }
 
-    fs.writeFileSync("tasks.json", JSON.stringify(json), { flag: "w+" });
+    fs.writeFileSync(tasksFile, JSON.stringify(json), { flag: "w+" });
 }
 
 export function GetTasks(): Task[] {
-    return (JSON.parse(fs.readFileSync("tasks.json").toString())).tasks;
+    return (JSON.parse(fs.readFileSync(tasksFile).toString())).tasks;
 }
 
 export function FlushTasks() {
     let tasks = { tasks: [] };
 
-    fs.writeFileSync("tasks.json", JSON.stringify(tasks), { flag: "w+" })
+    fs.writeFileSync(tasksFile, JSON.stringify(tasks), { flag: "w+" })
 }
 
 export function TasksToString() {
@@ -87,13 +89,3 @@ export function TasksToString() {
 
     return tasksString;
 }
-
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database
-// TODO: throw this shit into a database

@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { RemoveTask, TasksToString } = require('../tasks');
+import { SlashCommandBuilder } from 'discord.js'
+import { RemoveTask, TasksToString } from '../tasks';
 
 const data = new SlashCommandBuilder()
     .setName('remove')

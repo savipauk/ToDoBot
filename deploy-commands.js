@@ -1,13 +1,22 @@
 // re-run when you add a new command
 
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
+
+// const clientId = process.env.clientId;
+// const guildId = process.env.guildId;
+// const token = process.env.token;
+
+const { clientId, guildId, token } = require("./config.json");
+
+console.log(token);
+
+
 const fs = require('fs');
 const path = require('path');
 
 const commands = [];
 
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, 'src/commands');
 const commandFiles = fs.readdirSync(commandsPath);
 
 console.log(commandsPath);

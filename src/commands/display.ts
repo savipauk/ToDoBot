@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { TasksToString } = require('../tasks');
+import { SlashCommandBuilder } from 'discord.js';
+import { TasksToString } from '../tasks';
 
 const data = new SlashCommandBuilder()
     .setName('display')
