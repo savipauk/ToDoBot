@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { AddTask } = require('../tasks');
+import { SlashCommandBuilder } from 'discord.js';
+import { AddTask } from '../tasks';
 
 const data = new SlashCommandBuilder()
     .setName('todo')
@@ -16,6 +16,7 @@ module.exports = {
     async execute(interaction) {
         let task = interaction.options.getString('task');
         let taskId = AddTask(task, interaction.user.id);
+
         return interaction.reply(`Set task "${task}" (ID ${taskId}) for ${interaction.user}`);
     },
 };

@@ -1,13 +1,20 @@
 // re-run when you add a new command
 
+require('dotenv').config();
+
+
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
+
+const clientId = process.env.clientId;
+const guildId = process.env.guildId;
+const token = process.env.token;
+
 const fs = require('fs');
 const path = require('path');
 
-const commands = [];
+let commands: any[] = [];
 
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, '/commands');
 const commandFiles = fs.readdirSync(commandsPath);
 
 console.log(commandsPath);

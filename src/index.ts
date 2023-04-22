@@ -1,11 +1,11 @@
+require('dotenv').config();
+
+import fs from 'fs';
+import path from 'path';
+
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 
-const config = require('./config.json');
-const taskUtil = require('./tasks');
-
-const TOKEN = config.token;
+const token = process.env.token;
 
 const client = new Client({
     intents: [
@@ -20,7 +20,7 @@ const client = new Client({
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.ts'));
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
@@ -33,7 +33,7 @@ for (const file of commandFiles) {
     }
 }
 
-client.on(Events.InteractionCreate, async (interaction) => {
+client.on(Events.InteractionCreate, async (interaction: any) => {
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName); // gets value of key (module.exp)
@@ -59,10 +59,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 
-// taskUtil.FlushTasks();
 
 client.on("ready", () => {
     console.log(`ready ${client.user.tag}`);
 });
 
-client.login(TOKEN);
+client.login(token);
