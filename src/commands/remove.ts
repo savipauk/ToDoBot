@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js'
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 import { RemoveTask, TasksToString } from '../tasks';
 
 const data = new SlashCommandBuilder()
@@ -6,16 +6,16 @@ const data = new SlashCommandBuilder()
     .setDescription('Remove a task by id')
     .addIntegerOption((task) =>
         task.setName('id')
-            .setDescription('Id of you want to remove')
+            .setDescription('Id of the task you want to remove')
             .setRequired(true)
     );
 
 module.exports = {
     data,
 
-    async execute(interaction) {
-        let taskId = interaction.options.getInteger('id');
-        let task = RemoveTask(taskId);
+    async execute(interaction: CommandInteraction) {
+        let taskId = interaction.options.get('id').value.toString();
+        let task = RemoveTask(parseInt(taskId));
 
         let newTaskList = TasksToString();
 

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { AddTask } from '../tasks';
 
 const data = new SlashCommandBuilder()
@@ -13,8 +13,8 @@ const data = new SlashCommandBuilder()
 module.exports = {
     data,
 
-    async execute(interaction) {
-        let task = interaction.options.getString('task');
+    async execute(interaction: CommandInteraction) {
+        let task = interaction.options.get('task').value.toString();
         let taskId = AddTask(task, interaction.user.id);
 
         return interaction.reply(`Set task "${task}" (ID ${taskId}) for ${interaction.user}`);
