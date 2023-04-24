@@ -19,8 +19,7 @@
     },
     "include": [
         "src",
-        "environment.d.ts",
-        "src/deploy-commands.ts"
+        "environment.d.ts"
     ],
     "exclude": [
         "node_modules",
