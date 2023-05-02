@@ -1,3 +1,4 @@
+import { User } from 'discord.js';
 import fs from 'fs';
 
 const tasksFile = "tasks.json";
@@ -40,7 +41,7 @@ export function RemoveTask(id: number): Task {
     return removedTask;
 }
 
-export function SetAssignee(id: number, assignee: string): Task {
+export function SetAssignee(id: number, assignee: User): Task {
     let tasks = GetTasks();
     FlushTasks();
 
@@ -48,7 +49,7 @@ export function SetAssignee(id: number, assignee: string): Task {
 
     for (let task of tasks) {
         if (task.id == id) {
-            if (assignee != undefined) task.assignee = assignee;
+            if (assignee != undefined) task.assignee = assignee.id;
             editedTask = task;
         }
 

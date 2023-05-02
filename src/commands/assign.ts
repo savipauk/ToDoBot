@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { SetAssignee, TasksToString } from '../tasks';
+import { SetAssignee } from '../tasks';
 import { Command } from '../types/Command';
 
 export const Assign: Command = {
@@ -14,8 +14,8 @@ export const Assign: Command = {
             type: ApplicationCommandOptionType.Integer
         },
         {
-            name: "member",
-            description: "Member to assign task to, leave empty if assigning to yourself",
+            name: "assignee",
+            description: "User to assign task to, leave empty if assigning to yourself",
             required: false,
             type: ApplicationCommandOptionType.User
         }
@@ -25,16 +25,16 @@ export const Assign: Command = {
 
         let content = "Task doesn't exist";
 
-        let user = interaction.options.get('member')?.user.id;
+        let user = interaction.options.get('assignee')?.user;
 
         if (user === undefined) {
-            user = interaction.user.id;
+            user = interaction.user;
         }
 
         let task = SetAssignee(parseInt(taskId), user);
 
         if (task != null) {
-            content = `Task "${task.description}" assigned to <@${user}>`;
+            content = `Task "${task.description}" assigned to ${user}`;
         }
 
         // ephemeral = only you can see (true) or everybody can see (false)

@@ -12,13 +12,25 @@ export const Todo: Command = {
             description: "Task description",
             required: true,
             type: ApplicationCommandOptionType.String
+        },
+        {
+            name: "assignee",
+            description: "User to assign task to, leave empty if assigning to yourself",
+            required: false,
+            type: ApplicationCommandOptionType.User
         }
     ],
     run: async (client: Client, interaction: CommandInteraction) => {
         let task = interaction.options.get('task').value.toString();
         let taskId = AddTask(task, interaction.user.id);
 
-        let content = `Set task "${task}" (ID ${taskId}) for ${interaction.user}`;
+        let user = interaction.options.get('assignee')?.user;
+
+        if (user === undefined) {
+            user = interaction.user;
+        }
+
+        let content = `Set task "${task}" (ID ${taskId}) for ${user}`;
 
         // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({
