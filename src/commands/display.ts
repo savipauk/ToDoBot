@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { TasksToString } from '../tasks';
 
 const data = new SlashCommandBuilder()
@@ -8,7 +8,7 @@ const data = new SlashCommandBuilder()
 module.exports = {
     data,
 
-    async execute(interaction) {
+    async execute(interaction: CommandInteraction) {
         let reply = TasksToString();
 
         await interaction.reply(`${reply}`);

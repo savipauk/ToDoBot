@@ -12,7 +12,7 @@ const token = process.env.token;
 const fs = require('fs');
 const path = require('path');
 
-let commands: any[] = [];
+let commands = [];
 
 const commandsPath = path.join(__dirname, '/commands');
 const commandFiles = fs.readdirSync(commandsPath);
