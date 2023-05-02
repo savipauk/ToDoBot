@@ -6,7 +6,7 @@ A discord bot we are making in order to help us track progress on a planned proj
 ## Funtions:
 ##### /todo [description] [user]
 - Create a task and assign it to a user
-- user is an optional parameter
+- `user` is an optional parameter
    - leave blank to assign task to yourself
 - example: ```/todo [Finish this project] [@RandomUser]```
 ##### /display
@@ -16,9 +16,9 @@ A discord bot we are making in order to help us track progress on a planned proj
 - example: ```/remove [1]```
 ##### /assign [id] [user]
 - Assign the specified task (based on the id) to a user
-- user is an optional parameter
+- `user` is an optional parameter
    - leave blank to assign task to yourself
 - example: ```/assign [1] [@RandomUser]```
 ##### /edit [id] [description]
 - Edit the specified tasks description
-- example: ```/edit [1] [New Task Description]```
+- example: ```/edit [1] [Write todo list]```
