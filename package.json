@@ -8,8 +8,7 @@
         "start:dev": "ts-node-dev src/index.ts",
         "start:prod": "node dist/index.js",
         "build": "tsc",
-        "watch": "tsc-w",
-        "deploy-commands": "ts-node src/deploy-commands.ts"
+        "watch": "tsc-w"
     },
     "repository": {
         "type": "git",
