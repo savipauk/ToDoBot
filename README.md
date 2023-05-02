@@ -13,11 +13,11 @@ A discord bot we are making in order to help us track progress on a planned proj
 - Prints a list of all tasks
 ##### /remove [id]
 - Removes the specified task from the list
-- user is an optional parameter
-   - leave blank to assign task to yourself
 - example: ```/remove [1]```
 ##### /assign [id] [user]
 - Assign the specified task (based on the id) to a user
+- user is an optional parameter
+   - leave blank to assign task to yourself
 - example: ```/assign [1] [@RandomUser]```
 ##### /edit [id] [description]
 - Edit the specified tasks description
