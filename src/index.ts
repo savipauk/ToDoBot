@@ -22,8 +22,6 @@ client.on("ready", async () => {
 
     await client.application.commands.set(Commands);
 
-    console.log(Commands);
-
     console.log(`ready ${client.user.tag}`);
 });
 

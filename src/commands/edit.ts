@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { RemoveTask, TasksToString } from '../tasks';
+import { GetTaskById, RemoveTask, SetDescription, TasksToString } from '../tasks';
 import { Command } from '../types/Command';
 
 export const Edit: Command = {
@@ -21,20 +21,20 @@ export const Edit: Command = {
         }
     ],
     run: async (client: Client, interaction: CommandInteraction) => {
-        // let taskId = interaction.options.get('task').value.toString();
-        // let task = RemoveTask(parseInt(taskId));
+        let taskId = interaction.options.get('task').value.toString();
+        let taskDescription = interaction.options.get('description').value.toString();
 
-        // let user = interaction.options.get('member').user.id;
+        let content = "Task doesn't exist";
 
-        // let newTaskList = TasksToString();
+        let oldTaskDescription = GetTaskById(parseInt(taskId))?.description;
 
+        if (oldTaskDescription != null) {
 
-        // console.log(user);
+            let task = SetDescription(parseInt(taskId), taskDescription);
 
-        // let content = "Task doesn't exist";
-        // if (task != null) content = `Task "${task.description}" removed, ${interaction.user}\n\n${newTaskList}`;
+            content = `Updated task "${oldTaskDescription}" (ID ${taskId})\n\n"${task.description}" for <@${task.assignee}>`;
+        }
 
-        let content = "hiii";
 
         // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({

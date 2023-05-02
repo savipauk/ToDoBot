@@ -40,7 +40,7 @@ export function RemoveTask(id: number): Task {
     return removedTask;
 }
 
-export function SetAssignee(id: number, assigne: string): Task {
+export function SetAssignee(id: number, assignee: string): Task {
     let tasks = GetTasks();
     FlushTasks();
 
@@ -48,7 +48,7 @@ export function SetAssignee(id: number, assigne: string): Task {
 
     for (let task of tasks) {
         if (task.id == id) {
-            task.assignee = assigne;
+            if (assignee != undefined) task.assignee = assignee;
             editedTask = task;
         }
 
@@ -74,6 +74,18 @@ export function SetDescription(id: number, description: string): Task {
     }
 
     return editedTask;
+}
+
+export function GetTaskById(id: number): Task {
+    let tasks = GetTasks();
+
+    for (let task of tasks) {
+        if (task.id == id) {
+            return task;
+        }
+    }
+
+    return null;
 }
 
 function FindLastId() {

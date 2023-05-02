@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { RemoveTask, TasksToString } from '../tasks';
+import { SetAssignee, TasksToString } from '../tasks';
 import { Command } from '../types/Command';
 
 export const Assign: Command = {
@@ -21,22 +21,21 @@ export const Assign: Command = {
         }
     ],
     run: async (client: Client, interaction: CommandInteraction) => {
-        // let taskId = interaction.options.get('task').value.toString();
-        // let task = RemoveTask(parseInt(taskId));
+        let taskId = interaction.options.get('task').value.toString();
 
-        // let user = interaction.options.get('member').user.id;
+        let content = "Task doesn't exist";
 
-        // let newTaskList = TasksToString();
+        let user = interaction.options.get('member')?.user.id;
 
+        if (user === undefined) {
+            user = interaction.user.id;
+        }
 
-        // console.log(user);
+        let task = SetAssignee(parseInt(taskId), user);
 
-        // let content = "Task doesn't exist";
-        // if (task != null) content = `Task "${task.description}" removed, ${interaction.user}\n\n${newTaskList}`;
-
-        // no functionality
-
-        let content = "hi";
+        if (task != null) {
+            content = `Task "${task.description}" assigned to <@${user}>`;
+        }
 
         // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({
