@@ -1,16 +1,18 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
 import { TasksToString } from '../tasks';
+import { Command } from '../types/Command';
 
-const data = new SlashCommandBuilder()
-    .setName('display')
-    .setDescription('Returns a list of all tasks');
+export const Display: Command = {
+    name: "display",
+    description: "Display all tasks",
+    type: ApplicationCommandType.ChatInput,
+    run: async (client: Client, interaction: CommandInteraction) => {
+        let content = TasksToString();
 
-module.exports = {
-    data,
-
-    async execute(interaction: CommandInteraction) {
-        let reply = TasksToString();
-
-        await interaction.reply(`${reply}`);
-    },
-};
+        // ephemeral = only you can see (true) or everybody can see (false)
+        await interaction.followUp({
+            ephemeral: false,
+            content
+        })
+    }
+}

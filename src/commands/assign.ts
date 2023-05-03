@@ -1,17 +1,17 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { AddTask } from '../tasks';
+import { SetAssignee } from '../tasks';
 import { Command } from '../types/Command';
 
-export const Todo: Command = {
-    name: "todo",
-    description: "Create a new task",
+export const Assign: Command = {
+    name: "assign",
+    description: "Assign a task to a member",
     type: ApplicationCommandType.ChatInput,
     options: [
         {
             name: "task",
-            description: "Task description",
+            description: "Id of the task you are assigning",
             required: true,
-            type: ApplicationCommandOptionType.String
+            type: ApplicationCommandOptionType.Integer
         },
         {
             name: "assignee",
@@ -21,8 +21,9 @@ export const Todo: Command = {
         }
     ],
     run: async (client: Client, interaction: CommandInteraction) => {
-        let task = interaction.options.get('task').value.toString();
-        let taskId = AddTask(task, interaction.user.id);
+        let taskId = interaction.options.get('task').value.toString();
+
+        let content = "Task doesn't exist";
 
         let user = interaction.options.get('assignee')?.user;
 
@@ -30,7 +31,11 @@ export const Todo: Command = {
             user = interaction.user;
         }
 
-        let content = `Set task "${task}" (ID ${taskId}) for ${user}`;
+        let task = SetAssignee(parseInt(taskId), user);
+
+        if (task != null) {
+            content = `Task "${task.description}" assigned to ${user}`;
+        }
 
         // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({

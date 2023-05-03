@@ -1,3 +1,4 @@
+import { User } from 'discord.js';
 import fs from 'fs';
 
 const tasksFile = "tasks.json";
@@ -5,16 +6,16 @@ const tasksFile = "tasks.json";
 export type Task = {
     id: number;
     description: string;
-    asignee: string;
+    assignee: string;
 }
 
 // TODO: throw this shit into a database
 
 
-export function AddTask(description: string, asignee: string): number {
+export function AddTask(description: string, assignee: string): number {
     let id = FindLastId();
 
-    _AddTask({ id, description, asignee });
+    _AddTask({ id, description, assignee });
 
     return id;
 }
@@ -26,7 +27,7 @@ export function RemoveTask(id: number): Task {
 
     // TODO: THROW SOMETHING IF TASK DOESNT EXIST ITS NOT HANDLED YET
 
-    let removedTask;
+    let removedTask: Task = null;
 
     for (let task of tasks) {
         if (task.id == id) {
@@ -40,6 +41,53 @@ export function RemoveTask(id: number): Task {
     return removedTask;
 }
 
+export function SetAssignee(id: number, assignee: User): Task {
+    let tasks = GetTasks();
+    FlushTasks();
+
+    let editedTask: Task = null;
+
+    for (let task of tasks) {
+        if (task.id == id) {
+            if (assignee != undefined) task.assignee = assignee.id;
+            editedTask = task;
+        }
+
+        _AddTask(task);
+    }
+
+    return editedTask;
+}
+
+export function SetDescription(id: number, description: string): Task {
+    let tasks = GetTasks();
+    FlushTasks();
+
+    let editedTask: Task = null;
+
+    for (let task of tasks) {
+        if (task.id == id) {
+            task.description = description;
+            editedTask = task;
+        }
+
+        _AddTask(task);
+    }
+
+    return editedTask;
+}
+
+export function GetTaskById(id: number): Task {
+    let tasks = GetTasks();
+
+    for (let task of tasks) {
+        if (task.id == id) {
+            return task;
+        }
+    }
+
+    return null;
+}
 
 function FindLastId() {
     let tasks = GetTasks();
@@ -82,7 +130,7 @@ export function TasksToString() {
     let tasksString = "";
 
     for (let task of tasks) {
-        tasksString += `${task.description}, by <@${task.asignee}> | ${task.id}\n`;
+        tasksString += `${task.description}, by <@${task.assignee}> | ${task.id}\n`;
     }
 
     tasksString += "\n";
