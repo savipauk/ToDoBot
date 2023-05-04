@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction } from 'discord.js';
 import { AddTask } from '../tasks';
 import { Command } from '../types/Command';
 
@@ -20,7 +20,7 @@ export const Todo: Command = {
             type: ApplicationCommandOptionType.User
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction) => {
+    run: async (interaction: CommandInteraction) => {
         let task = interaction.options.get('task').value.toString();
         let taskId = AddTask(task, interaction.user.id);
 
@@ -32,7 +32,6 @@ export const Todo: Command = {
 
         let content = `Set task "${task}" (ID ${taskId}) for ${user}`;
 
-        // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({
             ephemeral: false,
             content

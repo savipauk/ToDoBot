@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction } from 'discord.js';
 import { RemoveTask, TasksToString } from '../tasks';
 import { Command } from '../types/Command';
 
@@ -14,7 +14,7 @@ export const Remove: Command = {
             type: ApplicationCommandOptionType.Integer
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction) => {
+    run: async (interaction: CommandInteraction) => {
         let taskId = interaction.options.get('task').value.toString();
         let task = RemoveTask(parseInt(taskId));
 
@@ -23,7 +23,6 @@ export const Remove: Command = {
         let content = "Task doesn't exist";
         if (task != null) content = `Task "${task.description}" removed, ${interaction.user}\n\n${newTaskList}`;
 
-        // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({
             ephemeral: false,
             content

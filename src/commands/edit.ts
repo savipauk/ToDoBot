@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { GetTaskById, RemoveTask, SetDescription, TasksToString } from '../tasks';
+import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction } from 'discord.js';
+import { GetTaskById, SetDescription } from '../tasks';
 import { Command } from '../types/Command';
 
 export const Edit: Command = {
@@ -20,7 +20,7 @@ export const Edit: Command = {
             type: ApplicationCommandOptionType.String
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction) => {
+    run: async (interaction: CommandInteraction) => {
         let taskId = interaction.options.get('task').value.toString();
         let taskDescription = interaction.options.get('description').value.toString();
 
@@ -35,8 +35,6 @@ export const Edit: Command = {
             content = `Updated task "${oldTaskDescription}" (ID ${taskId})\n\n"${task.description}" for <@${task.assignee}>`;
         }
 
-
-        // ephemeral = only you can see (true) or everybody can see (false)
         await interaction.followUp({
             ephemeral: false,
             content
