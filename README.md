@@ -22,3 +22,6 @@ A discord bot we are making in order to help us track progress on a planned proj
 ##### /edit [id] [description]
 - Edit the specified tasks description
 - example: ```/edit [1] [Write todo list]```
+##### /taskboard [channel]
+- Set the text channel which will act as the taskboard
+- example: ```/edit [#Taskboard]```
