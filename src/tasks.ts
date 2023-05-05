@@ -7,17 +7,20 @@ export type Task = {
     id: number;
     description: string;
     assignee: string;
+    threadId?: string;
 }
 
 // TODO: throw this shit into a database
 
-
-export function AddTask(description: string, assignee: string): number {
+export function AddTask(description: string, assignee: string, threadId?: string): Task {
     let id = FindLastId();
 
-    _AddTask({ id, description, assignee });
+    let task: Task = {
+        id, description, assignee, threadId
+    }
+    _AddTask(task);
 
-    return id;
+    return task;
 }
 
 export function RemoveTask(id: number): Task {
@@ -40,6 +43,26 @@ export function RemoveTask(id: number): Task {
 
     return removedTask;
 }
+
+export function SetThreadId(id: number, threadId: string): Task {
+    let tasks = GetTasks();
+    FlushTasks();
+
+    let editedTask: Task = null;
+
+    for (let task of tasks) {
+        if (task.id == id) {
+            if (threadId != undefined) task.threadId = threadId;
+            editedTask = task;
+        }
+
+        _AddTask(task);
+    }
+
+    return editedTask;
+
+}
+
 
 export function SetAssignee(id: number, assignee: User): Task {
     let tasks = GetTasks();
@@ -94,12 +117,15 @@ function FindLastId() {
 
     let id: number = 0;
 
+    if (tasks == undefined || tasks == null || tasks.length == 0) {
+        return id;
+    }
+
+
     // TODO: throw this shit into a database so you dont have to poll tasks every time
-    if (tasks.length != 0) {
-        for (let t of tasks) {
-            if (t.id >= id) {
-                id = t.id + 1;
-            }
+    for (let t of tasks) {
+        if (t.id >= id) {
+            id = t.id + 1;
         }
     }
 
@@ -116,7 +142,13 @@ function _AddTask(task: Task) {
 }
 
 export function GetTasks(): Task[] {
-    return (JSON.parse(fs.readFileSync(tasksFile).toString())).tasks;
+    let tasks: Task[] = (JSON.parse(fs.readFileSync(tasksFile).toString())).tasks;
+
+    if (tasks == undefined || tasks == null || tasks.length == 0) {
+        return [];
+    }
+
+    return tasks;
 }
 
 export function FlushTasks() {
@@ -127,10 +159,14 @@ export function FlushTasks() {
 
 export function TasksToString() {
     let tasks = GetTasks();
+    if (tasks == undefined || tasks == null || tasks.length == 0) {
+        return "No tasks!";
+    }
+
     let tasksString = "";
 
     for (let task of tasks) {
-        tasksString += `${task.description}, by <@${task.assignee}> | ${task.id}\n`;
+        tasksString += `${task.description}, for <@${task.assignee}> | ${task.id}\n`;
     }
 
     tasksString += "\n";

@@ -1,6 +1,9 @@
-import { TextChannel } from 'discord.js';
+require('dotenv').config();
+
+import { CategoryChannel, ChannelType, Guild, TextChannel } from 'discord.js';
 import { Commands } from './Commands';
 import { ToDoClient } from './types/ToDoClient';
+
 
 
 export async function Ready(client: ToDoClient): Promise<void> {
@@ -12,17 +15,23 @@ export async function Ready(client: ToDoClient): Promise<void> {
 
     console.log(`ready ${client.user.tag}`);
 
-    // find text-channel / create it
+    /*
 
-    let botSpam: TextChannel = null;
+    TODO:
+    Creates a ToDoBot channel category and a Taskboard text channel in it. Discuss. 
 
-    try {
-        // fetch taskboard (bot spam)
-        botSpam = await client.channels.fetch("1096933563972210841") as TextChannel;
-    } catch (error) {
-        console.error(error);
-    }
+    let server: Guild = await client.guilds.fetch(process.env.guildId);
 
-    if (botSpam != null) {
-    }
+    let category: CategoryChannel = await server.channels.create({
+        name: "ToDoBot",
+        type: ChannelType.GuildCategory
+    });
+
+    await server.channels.create({
+        name: "Taskboard",
+        type: ChannelType.GuildText,
+        parent: category.id
+    });
+    
+    */
 }
