@@ -70,3 +70,9 @@ export async function CloseThreadForTask(task: Task, client: ToDoClient): Promis
 
     return await thread.setArchived();
 }
+
+export async function SendMessageToThread(task: Task, client: ToDoClient): Promise<string> {
+    // TODO
+
+    return ""
+}
