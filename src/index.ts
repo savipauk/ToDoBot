@@ -1,46 +1,22 @@
 require('dotenv').config();
 
-import { Client, CommandInteraction, GatewayIntentBits, Interaction } from 'discord.js';
-import { Commands } from './Commands';
+import { Interaction } from 'discord.js';
+import { InteractionCreate } from './commandHandler';
+import { Ready } from './ready';
+import { ToDoClient } from './types/ToDoClient';
 
 const token = process.env.token;
 
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.DirectMessages
-    ]
-});
+const client = new ToDoClient();
 
 client.on("ready", async () => {
-    if (!client.user || !client.application) {
-        return;
-    }
-
-    await client.application.commands.set(Commands);
-
-    console.log(`ready ${client.user.tag}`);
+    Ready(client);
 });
 
 client.on("interactionCreate", async (interaction: Interaction) => {
-    if (interaction.isCommand() || interaction.isContextMenuCommand()) {
-        await handleSlashCommand(client, interaction);
-    }
+    InteractionCreate(client, interaction);
 });
 
 client.login(token);
 
-const handleSlashCommand = async (client: Client, interaction: CommandInteraction): Promise<void> => {
-    const slashCommand = Commands.find(c => c.name === interaction.commandName);
-    if (!slashCommand) {
-        interaction.followUp({ content: "An error has occurred" });
-        return;
-    }
 
-    await interaction.deferReply();
-
-    slashCommand.run(client, interaction);
-};

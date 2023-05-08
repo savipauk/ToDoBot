@@ -1,6 +1,8 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Client, CommandInteraction } from 'discord.js';
-import { AddTask } from '../tasks';
+import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction, TextChannel } from 'discord.js';
+import { AddTask, SetThreadId } from '../tasks';
 import { Command } from '../types/Command';
+import { ToDoClient } from '../types/ToDoClient';
+import { CreateThreadForTask } from './taskboard';
 
 export const Todo: Command = {
     name: "todo",
@@ -20,9 +22,8 @@ export const Todo: Command = {
             type: ApplicationCommandOptionType.User
         }
     ],
-    run: async (client: Client, interaction: CommandInteraction) => {
-        let task = interaction.options.get('task').value.toString();
-        let taskId = AddTask(task, interaction.user.id);
+    run: async (interaction: CommandInteraction, client: ToDoClient) => {
+        let taskDesc = interaction.options.get('task').value.toString();
 
         let user = interaction.options.get('assignee')?.user;
 
@@ -30,9 +31,16 @@ export const Todo: Command = {
             user = interaction.user;
         }
 
-        let content = `Set task "${task}" (ID ${taskId}) for ${user}`;
+        let task = AddTask(taskDesc, user.id);
 
-        // ephemeral = only you can see (true) or everybody can see (false)
+        if (client.taskboardID != null) {
+            let threadId = await CreateThreadForTask(task, client);
+            SetThreadId(task.id, threadId);
+        }
+
+
+        let content = `Set task "${taskDesc}" (ID ${task.id}) for ${user}`;
+
         await interaction.followUp({
             ephemeral: false,
             content
