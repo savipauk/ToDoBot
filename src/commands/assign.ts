@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction } from 'discord.js';
 import { SetAssignee } from '../tasks';
 import { Command } from '../types/Command';
+import { ToDoClient } from '../types/ToDoClient';
+import { UpdateTaskboardTask } from './taskboard';
 
 export const Assign: Command = {
     name: "assign",
@@ -20,7 +22,7 @@ export const Assign: Command = {
             type: ApplicationCommandOptionType.User
         }
     ],
-    run: async (interaction: CommandInteraction) => {
+    run: async (interaction: CommandInteraction, client: ToDoClient) => {
         let taskId = interaction.options.get('task').value.toString();
 
         let content = "Task doesn't exist";
@@ -35,6 +37,10 @@ export const Assign: Command = {
 
         if (task != null) {
             content = `Task "${task.description}" assigned to ${user}`;
+
+            if (client.taskboardID != null) {
+                UpdateTaskboardTask(task, client, content);
+            }
         }
 
         await interaction.followUp({

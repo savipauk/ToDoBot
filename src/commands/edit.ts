@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType, ApplicationCommandType, CommandInteraction } from 'discord.js';
 import { GetTaskById, SetDescription } from '../tasks';
 import { Command } from '../types/Command';
+import { ToDoClient } from '../types/ToDoClient';
+import { UpdateTaskboardTask } from './taskboard';
 
 export const Edit: Command = {
     name: "edit",
@@ -20,7 +22,7 @@ export const Edit: Command = {
             type: ApplicationCommandOptionType.String
         }
     ],
-    run: async (interaction: CommandInteraction) => {
+    run: async (interaction: CommandInteraction, client: ToDoClient) => {
         let taskId = interaction.options.get('task').value.toString();
         let taskDescription = interaction.options.get('description').value.toString();
 
@@ -29,10 +31,12 @@ export const Edit: Command = {
         let oldTaskDescription = GetTaskById(parseInt(taskId))?.description;
 
         if (oldTaskDescription != null) {
-
             let task = SetDescription(parseInt(taskId), taskDescription);
-
             content = `Updated task "${oldTaskDescription}" (ID ${taskId})\n\n"${task.description}" for <@${task.assignee}>`;
+
+            if (client.taskboardID != null) {
+                UpdateTaskboardTask(task, client, content);
+            }
         }
 
         await interaction.followUp({

@@ -72,8 +72,14 @@ async function GetTaskboardTextChannel(client: ToDoClient): Promise<TextChannel>
     return await client.channels.fetch(client.taskboardID) as TextChannel;
 }
 
-export async function SendMessageToThread(task: Task, client: ToDoClient): Promise<string> {
-    // TODO
+export async function UpdateTaskboardTask(task: Task, client: ToDoClient, content: string): Promise<string> {
+    let channel: TextChannel = await GetTaskboardTextChannel(client);
+    let thread = await channel.threads.fetch(task.threadId);
 
-    return ""
+    thread.setName(`${task.id} | ${task.description} | <@${task.assignee}>`);
+    thread.send(content);
+    channel.send(content);
+
+
+    return "";
 }
